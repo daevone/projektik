@@ -28,18 +28,13 @@ class SomeForm(FlaskForm):
     status = SelectField('status', choices=[('nova', 'nova'), ('zauctovano', 'zauctovano')])
 '''
 
-class metadataForm(FlaskForm):
-
-    for result in api.metadata.metadata_types.get()['results']:
-        metadata = [result['name']]
-        for i in range(len(metadata)):
-            if i < range (len(metadata)):
-                name = StringField(result['name'])
-                print (metadata[i])
-
-        #print len(metadata)
+class MetadataForm(FlaskForm):
+    pass
 
 
+for result in api.metadata.metadata_types.get()['results']:
+    new_string_field = StringField(result['name'])
+    setattr(MetadataForm, result['name'], new_string_field)
 
 
 
@@ -52,7 +47,8 @@ def home():
 
 @main_blueprint.route('/metadata')
 def red():
-    form=metadataForm()
+    form=MetadataForm()
+    print(form._fields)
     return render_template('main/metadata.html',form=form)
 
 
